@@ -4,7 +4,7 @@ An electron-based ROM manager for the masses.
 
 ## Current state
 
-You can select a folder full of roms and export things to a nice.
+You can select a folder full of roms and export things to a nice folder structure.
 
 ## Todo / Ideas
 
