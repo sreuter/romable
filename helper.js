@@ -1,12 +1,9 @@
-'non strict';
+'use strict';
 
-const pug = require('pug');
-const pathUtil = require('path');
-const express = require('express');
-const serveStatic = require('serve-static')
 const async = require('async');
 const filewalker = require('filewalker');
 const Zip7 = require('node-7z');
+const pathUtil = require('path');
 
 const ignoreList = ['.DS_Store'];
 
@@ -75,20 +72,7 @@ const expandDirectoryList = (directoryList, cb) => {
   }, cb);
 }
 
-const app = express();
-app.set('view engine', 'pug');
-app.use(serveStatic('data/', {index: false}))
-
-app.get('/', (req, res) => {
-  getDirectoryList('/Users/sreuter/Desktop/S', (err, directoryList) => {
-    expandDirectoryList(directoryList, (err, expandedDirectoryList) => {
-      if(err) {
-        console.error(err);
-      } else {
-        res.render('index', { roms: directoryList});
-      }
-    });
-  });
-});
-
-app.listen(8000);
+module.exports = {
+  getDirectoryList: getDirectoryList,
+  expandDirectoryList: expandDirectoryList
+}

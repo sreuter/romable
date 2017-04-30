@@ -9,15 +9,22 @@ html
       .toolbar { float: left; }
       th, td { font-weight: normal; padding: 0.75rem; }
       div.dataTables_info { float: left; padding-top: 0.4em !important; }
-
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     script(src="https://code.jquery.com/jquery-1.12.4.js")
     script(src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.js")
     script(src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")
+    <script>if (window.module) module = window.module;</script>
     script.
 
       var table;
       var goodCodes = {};
-      var targetPath = '/tmp/roms/{system}/{alphabetical}/{file}';
+      var targetPath = '/tmp/roms/{system}/{first-letter}/{file}';
+      var directoryList = require('electron').remote.getGlobal('sharedData').directoryList;
+      
+      var data = [];
+      for(index in directoryList) {
+        data.push([index, directoryList[index].name, directoryList[index].size, '', '', ''])
+      };
 
       var getSystem = function(path) {
         if(path.match(/\.gbc?$/g)) {
@@ -37,6 +44,7 @@ html
 
       var initDatatables = function() {
         return $('#table').DataTable({
+          data: data,
           dom: 'frti',
           paging: false,
           columnDefs: [
@@ -57,7 +65,6 @@ html
                 } else {
                   return '';
                 }
-                //return row[0].match(/\(.*?\)|\[.*?\]/g).join(', ');
               },
               targets: 4
             },
@@ -66,7 +73,7 @@ html
                 var exportPath = targetPath + '';
                 var replacements = {
                   "{system}": getSystem(row[1]),
-                  "{alphabetical}": getSortingCharacter(row[1]),
+                  "{first-letter}": getSortingCharacter(row[1]),
                   "{file}": row[1]
                 };
                 for(substr in replacements) {
@@ -86,24 +93,25 @@ html
       }
 
       $(document).ready( function () {
-        $.getJSON('GoodCodes.json')
-        .done(function(json) {
-          goodCodes = json;
-          table = initDatatables();
-          $("#targetPath").val(targetPath);
-          $("#targetPath").keyup(function() {
-            targetPath = $("#targetPath").val();
-
-            // Hard refresh table
-            var data = table.data();
-            table.clear();
-            table.rows.add(data);
-            table.draw('full-hold');
-
+        var goodCodes = require('fs').readFileSync('data/GoodCodes.json');
+        table = initDatatables();
+        $('#targetPath').val(targetPath);
+        $('#targetPath').keyup(function() {
+          targetPath = $("#targetPath").val();
+          // Hard refresh table
+          var data = table.data();
+          table.clear();
+          table.rows.add(data);
+          table.draw('full-hold');
+        });
+        $("#export").click(() => {
+          var tableData = table.rows().every(function(index) {
+            var row = table.cells(index, '').render('display');
+            var source = row[0];
+            var target = row[5];
+            console.log('Copying "' + source + '" to "' + target + '"');
+            require('fs-extra').copySync(source, target);
           });
-        })
-        .fail(function(jqxhr, textStatus, error) {
-          console.log(jqxhr, textStatus, error);
         });
       });
 
@@ -114,7 +122,7 @@ html
         div.toolbar.input-group
           input#targetPath.form-control(type="text")
           span#input-group-btn
-            button.btn.btn-secondary(type="button") Export
+            button#export.btn.btn-secondary(type="button") Export
     table.table-striped.table-bordered#table(cellspacing="0", width="100%")
       thead
         tr
@@ -125,11 +133,3 @@ html
           th Codes
           th Export Path
       tbody
-        each val, index in roms
-          tr
-            td= index
-            td= val.name
-            td= val.size
-            td
-            td
-            td
