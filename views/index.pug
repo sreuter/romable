@@ -17,8 +17,8 @@ html
     script.
 
       var table;
-      var goodCodes = {};
-      var targetPath = '/tmp/roms/{system}/{first-letter}/{file}';
+      var goodCodes = JSON.parse(require('fs').readFileSync('./data/GoodCodes.json'));
+      var targetPath = '/tmp/roms/{system}/{country}/{first-letter}/{file}';
       var directoryList = require('electron').remote.getGlobal('sharedData').directoryList;
       
       var data = [];
@@ -26,12 +26,30 @@ html
         data.push([index, directoryList[index].name, directoryList[index].size, '', '', ''])
       };
 
+      var getCountryCodes = () => {
+        var countryCodes = {};
+        var keys = Object.keys(goodCodes);
+        keys.map((value) => {
+          if(goodCodes[value].type && goodCodes[value].type === 'country') {
+            countryCodes[value] = goodCodes[value].title;
+          }
+        });
+        return countryCodes;
+      }
+
+      var getCountry = (path) => {
+        var countryCodes = getCountryCodes();
+        for(code in countryCodes) {
+          if(path.includes(code)) {
+            return countryCodes[code];
+          }
+        }
+      }
+
       var getSystem = function(path) {
         if(path.match(/\.gbc?$/g)) {
           return "Gameboy";
-        } else {
-          return "Unknown";
-        };
+        }
       };
 
       var getSortingCharacter =  function(path) {
@@ -46,11 +64,11 @@ html
         return $('#table').DataTable({
           data: data,
           dom: 'frti',
-          paging: false,
+          paging: true,
           columnDefs: [
             {
               render: function (data, type, row) {
-                return getSystem(row[1]);
+                return getSystem(row[1]) || "Unknown";
               },
               targets: 3
             },
@@ -72,7 +90,8 @@ html
               render: function(data, type, row) {
                 var exportPath = targetPath + '';
                 var replacements = {
-                  "{system}": getSystem(row[1]),
+                  "{system}": getSystem(row[1]) || "Unknown",
+                  "{country}": getCountry(row[1]) || "Misc",
                   "{first-letter}": getSortingCharacter(row[1]),
                   "{file}": row[1]
                 };
@@ -93,7 +112,6 @@ html
       }
 
       $(document).ready( function () {
-        var goodCodes = require('fs').readFileSync('data/GoodCodes.json');
         table = initDatatables();
         $('#targetPath').val(targetPath);
         $('#targetPath').keyup(function() {
@@ -105,7 +123,7 @@ html
           table.draw('full-hold');
         });
         $("#export").click(() => {
-          var tableData = table.rows().every(function(index) {
+          var tableData = table.rows({filter: 'applied'}).every(function(index) {
             var row = table.cells(index, '').render('display');
             var source = row[0];
             var target = row[5];
