@@ -52,21 +52,26 @@ const expandZip7 = (path, cb) => {
 }
 
 const expandDirectoryList = (directoryList, cb) => {
-  async.eachOf(directoryList, (stat, path, cb) => {
-    if(path.match(/\.7z$/)) {
-      delete(directoryList[path]);
-      expandZip7(path, (err, expandedZip7List) => {
-        for(let entry in expandedZip7List) {
-          directoryList[entry] = {
-            size: 'expanded',
-            name: pathUtil.basename(entry)
+  async.eachOfLimit(directoryList, 8, (stat, path, cb) => {
+    // Make things work with large folders / call stacks
+    setTimeout(function() {
+      if(path.match(/\.7z$/)) {
+        console.log('Expanding ' + path);
+        delete(directoryList[path]);
+        expandZip7(path, (err, expandedZip7List) => {
+          console.log(expandedZip7List)
+          for(let entry in expandedZip7List) {
+            directoryList[entry] = {
+              size: 'expanded',
+              name: pathUtil.basename(entry)
+            }
           }
-        }
+          cb();
+        });
+      } else {
         cb();
-      });
-    } else {
-      cb();
-    }
+      }
+    }, 0 );
   }, cb);
 }
 
