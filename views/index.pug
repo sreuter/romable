@@ -1,0 +1,91 @@
+html
+  head
+    title!= title
+
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css")
+    link(rel="stylesheet", href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css")
+
+    style.
+      .toolbar {
+        float: left;
+      }
+
+    script(src="https://code.jquery.com/jquery-1.12.4.js")
+    script(src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.js")
+    script(src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")
+    script.
+
+      var goodCodes = {};
+
+      var initDatatables = function() {
+        $('#table').DataTable({
+          dom: '<"toolbar">frtip',
+          paging: true,
+          columnDefs: [
+            {
+              render: function ( data, type, row ) {
+                var system;
+                if(row[1].match(/\.gbc?$/g)) {
+                  return "Gameboy";
+                } else {
+                  return "Unknown";
+                };
+              },
+              targets: 3
+            },
+            {
+              render: function ( data, type, row ) {
+                var codes = row[1].match(/\(.*?\)|\[.*?\]/g);
+                if(codes) {
+                  resolvedCodes = codes.map(function(code) {
+                    return goodCodes[code] && goodCodes[code].title || code
+                  });
+                  return resolvedCodes.join(', ');
+                } else {
+                  return '';
+                }
+                //return row[0].match(/\(.*?\)|\[.*?\]/g).join(', ');
+              },
+              targets: 4
+            },
+            {
+              targets: 0,
+              visible: false,
+              searching: false
+            }
+          ]
+        });
+      }
+
+      $(document).ready( function () {
+        $.getJSON('GoodCodes.json')
+        .done(function(json) {
+          goodCodes = json;
+          initDatatables();
+
+          $("div.toolbar").html('<b>Custom tool bar! Text/images etc.</b>');
+
+        })
+        .fail(function(jqxhr, textStatus, error) {
+          console.log(jqxhr, textStatus, error);
+        });
+      });
+
+  body
+    h1!= path
+    table.table-striped.table-bordered#table(cellspacing="0", width="100%")
+      thead
+        tr
+          th Path
+          th Name
+          th Size
+          th System
+          th Codes
+      tbody
+        each val, index in roms
+          tr
+            td= index
+            td= val.name
+            td= val.size
+            td
+            td

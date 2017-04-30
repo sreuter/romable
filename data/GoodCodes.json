@@ -1,0 +1,259 @@
+{
+  "[a]": {
+    "title": "Alternate",
+    "type": "standard",
+    "description": "This is simply an alternate version of a ROM. Many games have been re-released to fix bugs or even to eliminate Game Genie codes (Yes, Nintendo hates that device)."
+  },
+  "[b]": {
+    "title": "Bad Dump",
+    "type": "standard",
+    "description": "A bad dump often occurs with an older game or a faulty dumper (bad connection). Another common source of [b] ROMs is a corrupted upload to a release FTP."
+  },
+  "[f]": {
+    "title": "Fixed",
+    "type": "standard",
+    "description": "A fixed game has been altered in some way so that it will run better on a copier or emulator."
+  },
+  "[h]": {
+    "title": "Hack",
+    "type": "standard",
+    "description": "Something in this ROM is not quite as it should be. Often a hacked ROM simply has a changed header or has been enabled to run in different regions. Other times it could be a release group intro, or just some kind of cheating or funny hack."
+  },
+  "[o]": {
+    "title": "Overdump",
+    "type": "standard",
+    "description": "An overdumped ROM image has more data than is actually in the cart. The extra information means nothing and is removed from the true image."
+  },
+  "(M#)": {
+    "title": "Multilanguage",
+    "type": "standard",
+    "#": "Languages"
+  },
+  "(###)": {
+    "title": "Checksum",
+    "type": "standard"
+  },
+  "ZZZ_": {
+    "title": "Unclassified",
+    "type": "standard"
+  },
+  "p": {
+    "title": "Pirate",
+    "type": "standard"
+  },
+  "[t]": {
+    "title": "Trained",
+    "type": "standard",
+    "description": "A trainer is special code which executes before the game is begun. It allows you to access cheats from a menu."
+  },
+  "[T-]": {
+    "title": "OldTranslation",
+    "type": "standard"
+  },
+  "[T+]": {
+    "title": "NewerTranslation",
+    "type": "standard"
+  },
+  "[-]": {
+    "title": "Unknown Year",
+    "type": "standard"
+  },
+  "[!]": {
+    "title": "Verified Good Dump",
+    "type": "standard",
+    "description": "Verified good dump. Thank God for these!"
+  },
+  "(??k)": {
+    "title": "ROM Size",
+    "type": "standard"
+  },
+  "(Unl)": {
+    "title": "Unlicensed",
+    "type": "standard"
+  },
+  "[C]": {
+    "system": "Gameboy",
+    "title": "Color",
+    "type": "special"
+  },
+  "[S]": {
+    "system": "Gameboy",
+    "title": "Super",
+    "type": "special"
+  },
+  "[BF]": {
+    "system": "Gameboy",
+    "title": "Bung Fix",
+    "type": "special",
+    "description": "Bung released a programmable cartridge compatible with the GameBoy which could hold any data you wished to play. However, many games do not function on Bung v1.0 carts and have to be 'fixed'."
+  },
+  "[c]": {
+    "system": "Genesis",
+    "title": "Checksum",
+    "type": "special",
+    "description": "This code represents a cart with known fauly checksum routines."
+  },
+  "[x]": {
+    "system": "Genesis",
+    "title": "Bad Checksum",
+    "type": "special"
+  },
+  "[R-]": {
+    "system": "Genesis",
+    "title": "Countries",
+    "type": "special"
+  },
+  "[M]": {
+    "system": "NeoGeo Pocket",
+    "title": "Mono Only",
+    "type": "special"
+  },
+  "(BS)": {
+    "system": "Super Nintendo",
+    "title": "BS ROM",
+    "type": "special",
+    "description": "These Japanese ROMs were distributed through a satellite system in Japan known as the Broadcast Satellaview. They were transmitted along with a TV show which was connected to the game in some way. These games were only playable during the show, and thus stop after an hour, and many were timed so that only certain time periods were playable."
+  },
+  "(ST)": {
+    "system": "Super Nintendo",
+    "title": "Sufami Turbo",
+    "type": "special",
+    "description": "The Sufami Turbo device allowed two GameBoy sized carts to be plugged into the SNES. Certain carts combined into new games much like the Sonic & Knuckles lock-on technology by Sega."
+  },
+  "(NP)": {
+    "system": "Super Nintendo",
+    "title": "Nintendo Power",
+    "type": "special",
+    "description": "Nintendo Power has been known to release games only available to its subscribers. Most of these ROMs are Japanese, as this practice occured mainly in Japan."
+  },
+  "(PAL)": {
+    "system": "Atari",
+    "title": "Euro Version",
+    "type": "special"
+  },
+  "[hI??]": {
+    "system": "GBA",
+    "title": "Intro hacks",
+    "type": "special"
+  },
+  "(Adam)": {
+    "system": "Coleco",
+    "title": "ADAM Version",
+    "type": "special"
+  },
+  "(PC10)": {
+    "system": "NES/FC",
+    "title": "PlayChoice 10",
+    "type": "special",
+    "description": "The PlayChoice 10 was an arcade unit which played exact copies of NES games in an arcade cabinet. These machines had a choice of 10 games to choose from and ran for aboutu 3 minutes on 25 cents."
+  },
+  "(VS)": {
+    "system": "NES/FC",
+    "title": "Versus",
+    "type": "special",
+    "description": "The Versus system ran on similar hardware to the PC10 machines, but simply allowed you to play against each other."
+  },
+  "(hFFE)": {
+    "system": "NES/FC",
+    "title": "FFE Copier fmt",
+    "type": "special"
+  },
+  "(1)": {
+    "title": "Japan & Korea",
+    "type": "country"
+  },
+  "(4)": {
+    "title": "USA",
+    "type": "country",
+    "description": "While this code is technically the same as a (U) code, it is a new header format and reprents that the cart will run on USA and Brazil NTSC machines."
+  },
+  "(A)": {
+    "title": "Australia",
+    "type": "country"
+  },
+  "(B)": {
+    "title": "non USA (Genesis)",
+    "type": "country",
+    "description": "This country code indicates that the cart will run on any non US machines."
+  },
+  "(C)": {
+    "title": "China",
+    "type": "country"
+  },
+  "(E)": {
+    "title": "Europe",
+    "type": "country"
+  },
+  "(F)": {
+    "title": "France / World (Genesis)",
+    "type": "country"
+  },
+  "(FC)": {
+    "title": "French Canadian",
+    "type": "country"
+  },
+  "(FN)": {
+    "title": "Finland",
+    "type": "country"
+  },
+  "(G)": {
+    "title": "Germany",
+    "type": "country"
+  },
+  "(GR)": {
+    "title": "Greece",
+    "type": "country"
+  },
+  "(HK)": {
+    "title": "Hong Kong",
+    "type": "country"
+  },
+  "(H)": {
+    "title": "Holland",
+    "type": "country"
+  },
+  "(4)": {
+    "title": "USA & BrazilNTSC",
+    "type": "country"
+  },
+  "(J)": {
+    "title": "Japan",
+    "type": "country"
+  },
+  "(K)": {
+    "title": "Korea",
+    "type": "country"
+  },
+  "(NL)": {
+    "title": "Netherlands",
+    "type": "country"
+  },
+  "(PD)": {
+    "title": "Public Domain",
+    "type": "country"
+  },
+  "(S)": {
+    "title": "Spain",
+    "type": "country"
+  },
+  "(SW)": {
+    "title": "Sweden",
+    "type": "country"
+  },
+  "(U)": {
+    "title": "USA",
+    "type": "country"
+  },
+  "(UK)": {
+    "title": "England",
+    "type": "country"
+  },
+  "(Unk)": {
+    "title": "Unknown Country",
+    "type": "country"
+  },
+  "(I)": {
+    "title": "Italy",
+    "type": "country"
+  }
+}
