@@ -17,7 +17,7 @@ html
     script.
 
       var table;
-      var goodCodes = JSON.parse(require('fs').readFileSync('./data/GoodCodes.json'));
+      var goodCodes = require('goodcodes');
       var targetPath = '/tmp/roms/{system}/{country}/{first-letter}/{file}';
       var directoryList = require('electron').remote.getGlobal('sharedData').directoryList;
       
