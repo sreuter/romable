@@ -4,7 +4,7 @@
   "description": "Electron-based ROM Organizer for the masses",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
   "author": "Sascha Reuter",
   "license": "MIT",
@@ -16,5 +16,8 @@
     "goodcodes": "^1.0.0",
     "node-7z": "^0.4.0",
     "node-7z-15": "^0.4.3"
+  },
+  "devDependencies": {
+    "electron": "^1.6.6"
   }
 }
