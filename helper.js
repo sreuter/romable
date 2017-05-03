@@ -2,7 +2,7 @@
 
 const async = require('async');
 const filewalker = require('filewalker');
-const Zip7 = require('node-7z');
+const Zip7 = require('./util/7z-module-loader.js');
 const pathUtil = require('path');
 
 const ignoreList = ['.DS_Store'];

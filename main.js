@@ -3,6 +3,7 @@
 const url = require('url');
 const path = require('path');
 const helper = require('./helper');
+const isDev = require('./util/is-dev.js');
 const pug = require('electron-pug')({pretty: true}, {});
 const {app, protocol, dialog, BrowserWindow} = require('electron');
 
@@ -34,8 +35,10 @@ function createWindow () {
           protocol: 'file:',
           slashes: true
         }));
-        win.webContents.openDevTools();
-          win.on('closed', () => {
+        if (isDev) {
+         win.webContents.openDevTools();
+        }
+        win.on('closed', () => {
           win = null;
         });
       }
