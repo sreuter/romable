@@ -2,7 +2,7 @@
 
 const async = require('async');
 const filewalker = require('filewalker');
-const Zip7 = require('./util/7z-module-loader.js');
+const SevenZip = require('./SevenZip.js');
 const pathUtil = require('path');
 
 const ignoreList = ['.DS_Store'];
@@ -17,7 +17,8 @@ const getDirectoryList = (dir, cb) => {
     if(! ignoreList.indexOf(path)) return;
     directoryList[absolutePath] = {
       size: stat.size,
-      name: pathUtil.basename(absolutePath)
+      name: pathUtil.basename(absolutePath),
+      source: 'file'
     }
   })
   .on('error', (err) => {
@@ -32,20 +33,23 @@ const getDirectoryList = (dir, cb) => {
 
 const expandZip7 = (path, cb) => {
   let expandedZip7List = {};
-  const zip7 = new Zip7();
-  zip7.test(path)
-  .progress((files) => {
-    for(let zip7Path in files) {
-      let fullPath = pathUtil.join(path, files[zip7Path]);
-      expandedZip7List[fullPath] = {};
-    }
-  })
-  .then(() => {
+  SevenZip.list(path)
+  .then((data) => {
+    console.log(data);
+    data.forEach((file, index) => {
+      let fullPath = [path, file.name].join(';;;;;');
+      expandedZip7List[fullPath] = {
+        size: file.size,
+        name: file.name,
+        source: '7z'
+      };
+    });
+
     cb(null, expandedZip7List);
   })
   .catch((err) => {
     cb(err);
-  })
+  });
 }
 
 const expandDirectoryList = (directoryList, cb) => {
@@ -58,10 +62,7 @@ const expandDirectoryList = (directoryList, cb) => {
         expandZip7(path, (err, expandedZip7List) => {
           console.log(expandedZip7List)
           for(let entry in expandedZip7List) {
-            directoryList[entry] = {
-              size: 'expanded',
-              name: pathUtil.basename(entry)
-            }
+            directoryList[entry] = expandedZip7List[entry];
           }
           cb();
         });

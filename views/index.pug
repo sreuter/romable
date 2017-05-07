@@ -23,7 +23,13 @@ html
       
       var data = [];
       for(index in directoryList) {
-        data.push([index, directoryList[index].name, directoryList[index].size, '', '', ''])
+        data.push([
+          index,
+          directoryList[index].name,
+          directoryList[index].size,
+          '', '', '',
+          directoryList[index].source
+        ])
       };
 
       var getCountryCodes = () => {
@@ -63,7 +69,7 @@ html
       var initDatatables = function() {
         return $('#table').DataTable({
           data: data,
-          dom: 'frti',
+          dom: 'frtip',
           paging: true,
           columnDefs: [
             {
@@ -103,7 +109,7 @@ html
               targets: 5
             },
             {
-              targets: 0,
+              targets: [0],
               visible: false,
               searching: false
             }
@@ -123,12 +129,37 @@ html
           table.draw('full-hold');
         });
         $("#export").click(() => {
+
+          const z7queue = require('async').queue((task, cb) => {
+            console.log(`Extracting "${task.file}" from "${task.archive}" to "${task.dest}"`);
+            require('../SevenZip.js').extract(task.archive, task.dest, task.file)
+            .then(() => {
+              cb();
+            });
+          }, 10);
+
           var tableData = table.rows({filter: 'applied'}).every(function(index) {
             var row = table.cells(index, '').render('display');
             var source = row[0];
             var target = row[5];
-            console.log('Copying "' + source + '" to "' + target + '"');
-            require('fs-extra').copySync(source, target);
+            var sourceType = row[6];
+            
+            switch(sourceType) {
+              case 'file':
+                console.log('Copying "' + source + '" to "' + target + '"');
+                require('fs-extra').copySync(source, target);
+                break;
+              case '7z':
+                let archive = source.split(';;;;;');
+                z7queue.push({
+                  archive: archive[0],
+                  dest: require('path').parse(target).dir,
+                  file: [archive[1]]
+                });
+                break;
+              default:
+                'bla';
+            }
           });
         });
       });
@@ -150,4 +181,5 @@ html
           th System
           th Codes
           th Export Path
+          th Source Type
       tbody

@@ -17,3 +17,4 @@ You can select a folder full of roms and export things to a nice folder structur
 - Make it pretty
 - Package app for Windows/Linux/OSX
 - Covers, somehow?
+- Make external (CDN) dependencies local
